@@ -1,0 +1,105 @@
+.. -*- restructuredtext -*-
+
+##########################################
+tweetstream - Simple twitter streaming API
+##########################################
+
+Introduction
+------------
+
+tweetstream provides a class, TweetStream, that can be used to get
+tweets from Twitter's streaming API. An instance of the class can be used as
+an iterator. In addition to fetching tweets, the object keeps track of
+the number of tweets collected and the rate at which tweets are received.
+
+Subclasses are available for accessing the "track" and "follow" streams
+as well.
+
+There's also a ReconnectingTweetStream class that handles automatic
+reconnecting.
+
+Twitter's documentation about the streaming API can be found here:
+http://apiwiki.twitter.com/Streaming-API-Documentation .
+
+**Note** that the API is blocking. If for some reason data is not immediatly
+available, calls will block until enough data is available to yield a tweet.
+
+Examples
+--------
+
+Printing all incomming tweets:
+
+>>> stream = tweetstream.TweetStream("username", "password")
+>>> for tweet in stream:
+...     print tweet
+
+
+The stream object can also be used as a context, as in this example that
+prints the author for each tweet as well as the tweet count and rate:
+
+>>> with tweetstream.TweetStream("username", "password") as stream
+...     for tweet in stream:
+...         print "Got tweet from %-16s\t( tweet %d, rate %.1f tweets/sec)" % (
+...                 tweet["user"]["screen_name"], stream.count, stream.rate )
+
+
+Stream objects can raise ConnectionError or AuthenticationError exceptions:
+
+>>> try:
+...     with tweetstream.TweetStream("username", "password") as stream
+...         for tweet in stream:
+...             print "Got tweet from %-16s\t( tweet %d, rate %.1f tweets/sec)" % (
+...                     tweet["user"]["screen_name"], stream.count, stream.rate )
+... except tweetstream.ConnectionError, e:
+...     print "Disconnected from twitter. Reason:", e.reason
+
+To get tweets that relate to specific terms, use the TrackStream:
+
+>>> words = ["opera", "firefox", "safari"]
+>>> with tweetstream.TrackStream("username", "password", words) as stream
+...     for tweet in stream:
+...         print "Got interesting tweet:", tweet
+
+To get only tweets from a set of users, use the FollowStream. The following
+would get tweets for user 1, 42 and 8675309
+
+>>> users = [1, 42, 8675309]
+>>> with tweetstream.FollowStream("username", "password", users) as stream
+...     for tweet in stream:
+...         print "Got  tweet from:", tweet["user"]["screen_name"]
+
+
+Simple tweet fetcher that sends tweets to an AMQP message server using carrot:
+
+>>> from carrot.messaging import Publisher
+>>> from carrot.connection import AMQPConnection
+>>> from tweetstream import TweetStream
+>>> amqpconn = AMQPConnection(hostname="localhost", port=5672,
+...                           userid="test", password="test",
+...                           vhost="test")
+>>> publisher = Publisher(connection=amqpconn,
+...                       exchange="tweets", routing_key="stream")
+>>> with TweetStream("username", "password") as stream:
+...    for tweet in stream:
+...        publisher.send(tweet)
+>>> publisher.close()
+
+
+Changelog
+---------
+
+See the CHANGELOG file
+
+Contact
+-------
+
+The author is Rune Halvorsen <runefh@gmail.com>. The project resides at
+http://bitbucket.org/runeh/tweetstream . If you find bugs, or have feature
+requests, please report them in the project site issue tracker. Patches are
+also very welcome.
+
+License
+-------
+
+This software is licensed under the ``New BSD License``. See the ``LICENCE``
+file in the top distribution directory for the full license text.

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+<!--<link rel="stylesheet" type="text/css" href="jquery/css/ui-lightness/jquery-ui-1.8.12.custom.css" media="screen" />-->
+
+<script type="text/javascript" src="jquery/js/jquery-1.5.1.min.js"></script>
+<script type="text/javascript" src="jquery/js/jquery-ui-1.8.12.custom.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="jquery/css/jqtouch.css"/>
+
+<script type="text/javascript" src="jquery/js/jquery.mobile-1.0a4.1.js"></script>
+<link rel="stylesheet" href="jquery/css/jquery.mobile-1.0a4.1.min.css" />
+
+<script type="text/javascript" src="jquery/js/jquery.ui.datepicker.mobile.js"></script>
+<link rel="stylesheet" href="jquery/css/jquery.ui.datepicker.mobile.css" />
+
+<!--
+<link rel="stylesheet" href="jquery/css/redmond/jquery-ui-1.7.1.custom.css" type="text/css" title="ui-theme" />
+-->
+
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" src="jquery.dynacloud-5.js"></script>
+
+<script type="text/javascript" src="map.js"></script>
+<script type="text/javascript" src="ui.js"></script>
+<script type="text/javascript" src="driver.js"></script>
+</head>
+<body>
+<div data-role="page" id="settings_page">
+    <div data-role="header">
+        <h1>Settings</h1>
+        <a href="#map_page" data-role="button" date-theme="b">Load Map</a>
+    </div>
+    <div data-role="content">
+        <div data-role="fieldcontain">
+            <label for="radius_slider"><h2>Radius:</h2></label>
+            <input type="range" name="radius_slider" id="radius_slider" value="300" min="1" max="2000" onChange="updateVal('radius');" />
+        </div>
+        <div data-role="fieldcontain">
+            <label for="maxtweets_slider"><h2>Max # tweets:</h2></label>
+            <input type="range" name="maxtweets_slider" id="maxtweets_slider" value="100" min="1" max="1000" onChange="updateVal('maxtweets');" />
+        </div>
+        <div data-role="fieldcontain">
+            <label for="minvalence_slider"><h2>Min valence (negative emotion):</h2></label>
+            <input type="range" name="minvalence_slider" id="minvalence_slider" value="1" min="1" max="10" step=".5" onChange="verifyValence('minvalence');"/>
+        </div>
+        <div data-role="fieldcontain">
+            <label for="maxvalence_slider"><h2>Max valence (positive emotion):</h2></label>
+            <input type="range" name="maxvalence_slider" id="maxvalence_slider" value="10" min="1" max="10" step=".5" onChange="verifyValence('maxvalence');"/>
+        </div>
+
+        <div data-role="fieldcontain">
+            <label for="citypreset_select" class="select"><h2>Show location:</h2></label>
+            <select name="citypreset_select" id="citypreset_select" onChange="updateVal('loc');">
+                <option value="geolocate">My Location</option>
+                <option value="40.7,-73.92">New York</option>
+                <option value="42.32,-71.09">Boston</option>
+                <option value="37.76,-122.4">San Francisco</option>
+                <option value="43.702222,-72.289444">Hanover</option>
+            </select>
+        </div>
+
+        <!--
+        <div data-role="fieldcontain">
+            <label for="date_picker"><h2>Date Restriction:</h2></label>
+            <input type="date" name="date_picker" id="date_picker" value=""/>
+        </div>
+        -->
+
+    </div>
+</div>
+
+<div data-role="page" id="map_page">
+    <div id="map_header" data-role="header">
+        <h1><span id="status_map">Map</span></h1>
+        <a href="#settings_page" data-role="button" data-theme="b">Settings</a>
+        <a href="#tagcloud_page" data-role="button" data-theme="b" data-rel="dialog" data-close-btn-text="Close">Tag Cloud</a>
+    </div>
+
+    <div data-role="content" id="map_canvas">
+    </div>
+</div>
+
+<div data-role="page" id="tagcloud_page">
+    <div data-role="header">
+        <h1><span id="status">Tag Cloud</a></h1>
+    </div>
+
+
+    <div data-role="content">
+        <div id="dynacloud">
+            Not available, sorry...
+        </div>
+        <a href="#" data-role="button" data-theme="b" data-rel="back">Close</a>
+
+        <div id="keywords_hidden" class="dynacloud" style="display:none;"></div>
+    </div>
+
+</div>
+</body>
+</html>
