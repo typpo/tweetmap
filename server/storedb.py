@@ -5,10 +5,10 @@
 import MySQLdb
 import time
 
-DEFAULT_HOST = 'jamuna-prime.cs.dartmouth.edu'
-DEFAULT_USER = 'ianw'
-DEFAULT_PASS = 'uzpM03Eoi'
-DEFAULT_DB = 'ianw'
+DEFAULT_HOST = ''
+DEFAULT_USER = ''
+DEFAULT_PASS = ''
+DEFAULT_DB = ''
 
 class StoreDB:
     def __init__(self, host=DEFAULT_HOST, username=DEFAULT_USER, password=DEFAULT_PASS):

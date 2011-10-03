@@ -4,10 +4,10 @@
 
 import MySQLdb
 
-DEFAULT_HOST = 'jamuna-prime.cs.dartmouth.edu'
-DEFAULT_USER = 'ianw'
-DEFAULT_PASS = 'uzpM03Eoi'
-DEFAULT_DB = 'ianw'
+DEFAULT_HOST = ''
+DEFAULT_USER = ''
+DEFAULT_PASS = ''
+DEFAULT_DB = ''
 
 VALID_TYPES = ['valence', 'arousal', 'dominance']
 VALID_SEXES = ['m', 'f', 'all']
